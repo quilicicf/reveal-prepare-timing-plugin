@@ -1,0 +1,21 @@
+{
+  "name": "reveal-prepare-timing-plugin",
+  "version": "1.0.0",
+  "description": "Set timing on slides automatically by presenting them",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/quilicicf/reveal-prepare-timing-plugin.git"
+  },
+  "author": "quilicicf <quilicicf@gmail.com> (https://github.com/quilicicf)",
+  "license": "Apache-2.0",
+  "keywords": [
+    "revealjs",
+    "plugin",
+    "timing"
+  ],
+  "bugs": {
+    "url": "https://github.com/quilicicf/reveal-prepare-timing-plugin/issues"
+  },
+  "homepage": "https://github.com/quilicicf/reveal-prepare-timing-plugin#readme"
+}
