@@ -7,6 +7,9 @@
     "type": "git",
     "url": "git+https://github.com/quilicicf/reveal-prepare-timing-plugin.git"
   },
+  "scripts": {
+    "build": "parcel build  --target browser --no-source-maps --no-content-hash --public-url . --out-dir ./dist ./index.js"
+  },
   "author": "quilicicf <quilicicf@gmail.com> (https://github.com/quilicicf)",
   "license": "Apache-2.0",
   "keywords": [
@@ -17,5 +20,16 @@
   "bugs": {
     "url": "https://github.com/quilicicf/reveal-prepare-timing-plugin/issues"
   },
-  "homepage": "https://github.com/quilicicf/reveal-prepare-timing-plugin#readme"
+  "homepage": "https://github.com/quilicicf/reveal-prepare-timing-plugin#readme",
+  "dependencies": {
+    "file-saver": "2.0.2",
+    "parcel-bundler": "1.12.4",
+    "parcel-plugin-inliner": "1.0.10"
+  },
+  "devDpendencies": {
+    "@talend/eslint-config": "2.0.1",
+    "eslint": "6.3.0",
+    "eslint-config-airbnb": "18.0.1",
+    "eslint-plugin-import": "2.18.2"
+  }
 }
