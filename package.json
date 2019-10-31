@@ -26,7 +26,7 @@
     "parcel-bundler": "1.12.4",
     "parcel-plugin-inliner": "1.0.10"
   },
-  "devDpendencies": {
+  "devDependencies": {
     "@talend/eslint-config": "2.0.1",
     "eslint": "6.3.0",
     "eslint-config-airbnb": "18.0.1",
