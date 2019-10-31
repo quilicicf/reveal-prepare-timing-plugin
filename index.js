@@ -1,7 +1,15 @@
+import saveAs from 'file-saver';
+
+const { Reveal } = window;
+
 const ATTRIBUTE_ELAPSED_TIME = 'data-elapsed-time';
 
 const MODAL_ID = 'reveal-timing-plugin-modal';
-const MODAL_CONTENT_ID = 'reveal-timing-plugin-modal_content';
+const MODAL_CONTENT_ID = 'reveal-timing-plugin-modal-content';
+const MODAL_CLOSE_BUTTON_ID = 'reveal-timing-plugin-modal-close-button';
+const MODAL_CTA_ID = 'reveal-timing-plugin-modal-cta';
+const MODAL_DOWNLOAD_BUTTON_ID = 'reveal-timing-plugin-download-button';
+const REPORT_ID = 'reveal-timing-plugin-report';
 const RECORDING_ITEM_ID = 'reveal-timing-plugin-record-indicator';
 
 let lastSwitchDate = null;
@@ -82,7 +90,7 @@ function querySelectorAsArray (selector, parentNode = document) {
 
 function openModal () {
   const modal = document.getElementById(MODAL_ID);
-  modal.style.display = 'block';
+  modal.style.display = 'grid';
 
   const modalContent = document.getElementById(MODAL_CONTENT_ID);
 
@@ -92,6 +100,7 @@ function openModal () {
     return `<li>${bullet} ${title} (${timing}s)</li>`;
   };
 
+  const report = {};
   const allSlides = [];
   const allTimings = [];
   querySelectorAsArray('.slides > section')
@@ -101,20 +110,22 @@ function openModal () {
         const title = getSlideTitle(slide);
         const timing = getSlideElapsedTime(slide);
         allTimings.push(timing);
-        allSlides.push({
+        const slideReport = {
           title,
           timing,
           selector: `.slides > section:nth-of-type(${horizontalIndex})`,
           horizontalIndex,
           verticalIndex: null,
           html: createSingleSlideElement(horizontalIndex, null, title, timing),
-        });
+        };
+        report[ horizontalIndex ] = slideReport;
+        allSlides.push(slideReport);
       } else {
         const firstElement = childrenSlides[ 0 ];
         const title = getSlideTitle(firstElement);
         const timing = getSlideElapsedTime(firstElement);
         allTimings.push(timing);
-        allSlides.push({
+        const sectionReport = {
           title,
           timing,
           selector: `.slides > section:nth-of-type(${horizontalIndex}) > section:nth-of-type(0)`,
@@ -136,29 +147,37 @@ function openModal () {
                 html: createSingleSlideElement(horizontalIndex, verticalIndex, childTitle, childTiming),
               };
             }),
-        });
+        };
+        report[ horizontalIndex ] = sectionReport;
+        allSlides.push(sectionReport);
       }
     });
 
   const fullTiming = allTimings.reduce(function (seed, timing) {
     return seed + timing;
   }, 0);
-  modalContent.innerHTML = allSlides.reduce(function (seed, slideData) {
-    if (slideData.children) {
-      return `${seed}
+
+  modalContent.innerHTML = allSlides.reduce(
+    function (seed, slideData) {
+      if (slideData.children) {
+        return `${seed}
         ${slideData.html}
         <ol style="list-style-type: none">
           ${slideData.children.reduce(function (childSeed, childSlideData) {
-        return `${childSeed}${childSlideData.html}`;
-      }, '')
-      }
+          return `${childSeed}${childSlideData.html}`;
+        }, '')
+        }
         </ol>`;
-    } else {
-      return `${seed}
+      } else {
+        return `${seed}
         ${slideData.html}
       `;
-    }
-  }, `<div>Full presentation time: ${fullTiming}s</div><ol style="list-style-type: none">`) + '</ol>';
+      }
+    }, `
+    <div>Full presentation time: ${fullTiming}s</div>
+    <div id="${REPORT_ID}" style="display:none">${JSON.stringify(report, null, 2)}</div>
+    <ol style="list-style-type: none">`
+  ) + '</ol>';
 }
 
 function closeModal () {
@@ -175,16 +194,25 @@ function createModal () {
   modal.id = MODAL_ID;
 
   modal.innerHTML = `
+    <span id="${MODAL_CLOSE_BUTTON_ID}">✕</span>
     <h1 style="display: flex; justify-content: center;">Captured timings</h1>
-    <div id="${MODAL_CONTENT_ID}"></div>
+    <p id="${MODAL_CONTENT_ID}"></p>
+    <div id="${MODAL_CTA_ID}">
+      <button id="${MODAL_DOWNLOAD_BUTTON_ID}" type="button">Download report</button>
+    </div>
   `;
+
   applyStyle(modal, {
     display: 'none',
+    'grid-template': `
+      "header" 8vh
+      "content" 1fr
+      "cta" 8vh`,
     position: 'absolute',
     top: '10vh',
     bottom: '10vh',
-    left: '30vh',
-    right: '30vh',
+    left: '40vh',
+    right: '40vh',
     'border-radius': '1rem',
     border: '.50vh solid ',
     color: '#FFFFFF',
@@ -194,6 +222,46 @@ function createModal () {
 
   const body = document.querySelector('body');
   body.appendChild(modal);
+
+  const modalContent = document.getElementById(MODAL_CONTENT_ID);
+  applyStyle(modalContent, {
+    margin: '0 0 0 1vw',
+    overflow: 'auto',
+    'line-height': '1.1',
+  });
+
+  const cta = document.getElementById(MODAL_CTA_ID);
+  applyStyle(cta, {
+    display: 'flex',
+    'justify-content': 'flex-end',
+  });
+
+  const downloadButton = document.getElementById(MODAL_DOWNLOAD_BUTTON_ID);
+  applyStyle(downloadButton, {
+    'background-color': '#006B9A',
+    color: '#FFFFFF',
+    'border-radius': '1em',
+    margin: '1em',
+    outline: 'none',
+    border: 'none',
+    cursor: 'pointer',
+  });
+  downloadButton.onclick = () => {
+    const reportAsJson = document.getElementById(REPORT_ID).innerText;
+    const blob = new Blob([ reportAsJson ], { type: "application/json;charset=utf-8" });
+    saveAs(blob, 'reveal-timing-plugin-report.json');
+  };
+
+  const closeButton = document.getElementById(MODAL_CLOSE_BUTTON_ID);
+  applyStyle(closeButton, {
+    position: 'absolute',
+    top: '0',
+    right: '0',
+    'font-size': '2rem',
+    padding: '.5rem',
+    cursor: 'pointer',
+  });
+  closeButton.onclick = () => closeModal();
 }
 
 function createRecordingItem () {
