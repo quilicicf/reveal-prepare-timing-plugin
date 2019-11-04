@@ -7,6 +7,9 @@
     "type": "git",
     "url": "git+https://github.com/quilicicf/reveal-prepare-timing-plugin.git"
   },
+  "bin": {
+    "rpt": "bin/index.js"
+  },
   "scripts": {
     "build": "parcel build  --target browser --no-source-maps --no-content-hash --public-url . --out-dir ./dist ./index.js"
   },
@@ -24,7 +27,9 @@
   "dependencies": {
     "file-saver": "2.0.2",
     "parcel-bundler": "1.12.4",
-    "parcel-plugin-inliner": "1.0.10"
+    "parcel-plugin-inliner": "1.0.10",
+    "parse5-html-rewriting-stream": "5.1.0",
+    "yargs": "14.2.0"
   },
   "devDependencies": {
     "@talend/eslint-config": "2.0.1",
