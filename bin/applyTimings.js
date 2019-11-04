@@ -4,8 +4,6 @@ const reIndexReport = require('./reIndexReport');
 const RewritingStream = require('parse5-html-rewriting-stream');
 const {
   readFileSync,
-  writeFileSync,
-  unlinkSync,
   renameSync,
   createWriteStream,
   createReadStream,
