@@ -22,6 +22,20 @@ The report can be viewed any time by typing `y` (overridable too).
 
 > Note 2: the recording is erased when you start another one.
 
+## Apply the timings
+
+Copying all the timings by hand to the source document is a boring task that you can avoid doing.
+
+This plugin comes with an executable that takes the path to your HTML presentation and the path to the report you downloaded and applies to the timings from the report to the presentation.
+
+Call it as follows: 
+
+```
+npx rpt apply \
+  --source-path /path/to/presentation/file.html \
+  --report-path /path/to/report.json
+```
+
 ## Installation
 
 Install the npm package.
@@ -50,6 +64,6 @@ Reveal.initialize({
 - [ ] Write build script
 - [ ] Publish to npmjs
 - [ ] Publish to Reveal doc
-- [ ] Write script to auto-apply downloaded report on presentation's source
+- [x] Write script to auto-apply downloaded report on presentation's source
 - [ ] Stop recording when Reveal presentation is paused
 - [ ] When Reveal exposes the theme variables, use them (see [the related PR](https://github.com/hakimel/reveal.js/pull/2521))
