@@ -61,9 +61,10 @@ Reveal.initialize({
 
 ## Roadmap
 
-- [ ] Write build script
-- [ ] Publish to npmjs
+- [x] Write build script
+- [x] Publish to npmjs
 - [ ] Publish to Reveal doc
 - [x] Write script to auto-apply downloaded report on presentation's source
 - [ ] Stop recording when Reveal presentation is paused
 - [ ] When Reveal exposes the theme variables, use them (see [the related PR](https://github.com/hakimel/reveal.js/pull/2521))
+- [ ] Add screenshots to the README
