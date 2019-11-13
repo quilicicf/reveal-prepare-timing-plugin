@@ -38,5 +38,6 @@ prompter.on('close', () => {
   execSyncAndShareStdio('git push origin master');
   execSyncAndShareStdio(`git tag v${version}`);
   execSyncAndShareStdio(`git push origin v${version}`);
+  execSyncAndShareStdio('npm login');
   execSyncAndShareStdio('npm publish');
 });
