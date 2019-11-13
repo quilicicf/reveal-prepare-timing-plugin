@@ -53,7 +53,7 @@ Reveal.initialize({
     // Your plugins here
     { 
       src: './node_modules/reveal-prepare-timing-plugin/dist/index.js', 
-      async: false,
+      async: true,
     },
   ],
 });
