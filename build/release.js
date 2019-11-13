@@ -35,7 +35,7 @@ prompter.on('close', () => {
   execSyncAndShareStdio('npm run build');
   execSyncAndShareStdio('git add . -A');
   execSyncAndShareStdio(`git commit -m ':construction: Release version ${version}'`);
-  execSyncAndShareStdio('git push origin/master');
+  execSyncAndShareStdio('git push origin master');
   execSyncAndShareStdio(`git tag v${version}`);
   execSyncAndShareStdio(`git push origin v${version}`);
   execSyncAndShareStdio('npm publish');
