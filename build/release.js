@@ -5,6 +5,7 @@
  * This is due to the fact I'm the only developer currently anyway, and it's not planned to change anytime soon.
  */
 
+const { yellow } = require('chalk');
 const readline = require('readline');
 const { resolve: resolvePath } = require('path');
 
@@ -24,7 +25,7 @@ prompter.question('Have you updated and committed the version & changelog? (y/n)
   if (answer.toLocaleLowerCase() === 'y') {
     prompter.close();
   } else {
-    process.stdout.write('Please do it now and launch the script again afterwards\n');
+    process.stdout.write(yellow('Please do it now and launch the script again afterwards\n'));
     process.exit(1);
   }
 });
