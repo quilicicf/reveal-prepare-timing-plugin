@@ -10,6 +10,7 @@ const readline = require('readline');
 const { resolve: resolvePath } = require('path');
 
 const { version } = require('../package');
+const isGitDirty = require('./isGitDirty');
 const checkGitState = require('./checkGitState');
 const execSyncAndShareStdio = require('./execSyncAndShareStdio');
 
@@ -33,9 +34,13 @@ prompter.question('Have you updated and committed the version & changelog? (y/n)
 prompter.on('close', () => {
   execSyncAndShareStdio(`rm -rf ${DIST_PATH}`);
   execSyncAndShareStdio('npm run build');
-  execSyncAndShareStdio('git add . -A');
-  execSyncAndShareStdio(`git commit -m ':construction: Release version ${version}'`);
-  execSyncAndShareStdio('git push origin master');
+
+  if (isGitDirty()) {
+    execSyncAndShareStdio('git add . -A');
+    execSyncAndShareStdio(`git commit -m ':construction: Release version ${version}'`);
+    execSyncAndShareStdio('git push origin master');
+  }
+
   execSyncAndShareStdio(`git tag v${version}`);
   execSyncAndShareStdio(`git push origin v${version}`);
   execSyncAndShareStdio('npm login');
