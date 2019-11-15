@@ -1,6 +1,6 @@
 {
   "name": "reveal-prepare-timing-plugin",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Set timing on slides automatically by presenting them",
   "main": "index.js",
   "repository": {
