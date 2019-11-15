@@ -1,6 +1,4 @@
-const { tmpdir } = require('os');
-const { resolve: resolvePath } = require('path');
-const reIndexReport = require('./reIndexReport');
+const { resolve: resolvePath, dirname } = require('path');
 const RewritingStream = require('parse5-html-rewriting-stream');
 const {
   readFileSync,
@@ -8,6 +6,8 @@ const {
   createWriteStream,
   createReadStream,
 } = require('fs');
+
+const reIndexReport = require('./reIndexReport');
 
 const DATA_TIMING_ATTRIBUTE = 'data-timing';
 
@@ -22,11 +22,11 @@ const createRewriter = (reIndexedReport) => {
 
   rewriter.on('startTag', (tag) => {
     if (tag.tagName === 'section') {
-      if (state.depth > 0) {
-        state.verticalIndex++;
-      } else {
+      if (state.depth === 0) {
         state.horizontalIndex++;
         state.verticalIndex = 0;
+      } else {
+        state.verticalIndex++;
       }
 
       const slideId = `${state.horizontalIndex}/${state.verticalIndex}`;
@@ -34,7 +34,7 @@ const createRewriter = (reIndexedReport) => {
 
       state.depth++;
 
-      if (slideReport.children) { // Contains children, the section that receives the timing is current's child
+      if (slideReport.children && state.depth === 1) { // The section that receives the timing is current's child
         state.verticalIndex--;
         return rewriter.emitStartTag(tag);
       }
@@ -86,7 +86,7 @@ module.exports = ({ s: sourcePath, r: reportPath }) => {
   const report = JSON.parse(reportString);
   const reIndexedReport = reIndexReport(report);
 
-  const tempFile = resolvePath(tmpdir(), 'reveal-timing-plugin-apply-result.html');
+  const tempFile = resolvePath(dirname(sourcePath), 'reveal-timing-plugin-apply-result.html');
   const writeStream = createWriteStream(tempFile);
 
   createReadStream(sourcePath, { encoding: 'utf8' })
