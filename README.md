@@ -26,7 +26,7 @@ The report can be viewed any time by typing `y` (overridable too).
 
 Copying all the timings by hand to the source document is a boring task that you can avoid doing.
 
-This plugin comes with an executable that takes the path to your HTML presentation and the path to the report you downloaded and applies to the timings from the report to the presentation.
+This plugin comes with an executable that takes the path to your HTML presentation and the path to the report you downloaded and applies the timings from the report to the presentation.
 
 Call it as follows: 
 
