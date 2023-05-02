@@ -8,6 +8,12 @@ This can be done by setting the HTML attribute `data-timing` on your slide.
 
 This plugin allows you to start recording your presentation while you rehearse. At the end, it'll show you the time you spent on each slide so that you can be prepared and adjust if need be.
 
+## State of the project
+
+This project is supposed to work but I haven't had any time to work on it so it's paused until I have another big presentation to make.
+
+The dependencies are full of CVEs, but that should not be a biggy given the nature of the project.
+
 ## How it works
 
 The plugin can be started by typing `t` (keyboard shortcut overridable).
